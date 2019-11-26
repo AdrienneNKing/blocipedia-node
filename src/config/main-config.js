@@ -9,7 +9,7 @@ const viewsFolder = path.join(__dirname, "..", "views");
    init(app, express){
      app.set("views", viewsFolder);
      app.set("view engine", "ejs");
-     app.use(expressValidator());
+    /* app.use(expressValidator());*/
      app.use(express.static(path.join(__dirname, "..", "assets")));
    }
  };
