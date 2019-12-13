@@ -2,9 +2,23 @@ const User = require("./models").User;
 const bcrypt = require("bcryptjs");
 const Wiki = require("./models").Wiki;
 module.exports = {
+  getAllWikis(callback){
+    return Wiki.findAll()
+
+    .then((wikis) => {
+      callback(null, wikis);
+    })
+    .catch((err) => {
+      callback(err);
+    })
+  },
 
   addWiki(newWiki, callback){
-    return Wiki.create(newWiki)
+    return Wiki.create({
+      title: newWiki.title,
+      body: newWiki.body,
+      private: newWiki.private
+    })
     .then((wiki) => {
       callback(null, wiki);
     })
@@ -14,7 +28,7 @@ module.exports = {
   },
 
   getWiki(id, callback){
-    return Wiki.findByPk(id, {
+    return Wiki.findById(id, {
       include: [
         {model: User, as: "users"}
       ]
@@ -26,5 +40,36 @@ module.exports = {
       callback(err);
     })
   },
+
+  deleteWiki(id, callback){
+    return Wiki.destroy({
+      where: {id}
+    })
+    .then((wiki) => {
+      callback(null, wiki);
+    })
+    .catch((err) => {
+      callback(err);
+    })
+  },
+
+  updateWiki(id, updatedWiki, callback){
+     return Wiki.findById(id)
+     .then((wiki) => {
+       if(!wiki){
+         return callback("wiki not found");
+       }
+
+       wiki.update(updatedWiki, {
+         fields: Object.keys(updatedWiki)
+       })
+       .then(() => {
+         callback(null, wiki);
+       })
+       .catch((err) => {
+         callback(err);
+       });
+     });
+   }
 
 }
