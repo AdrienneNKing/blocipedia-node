@@ -2,17 +2,17 @@
 
 const faker = require("faker");
 
-let wikis = [];
+//#2
+ let users = [];
 
-for(let i = 1; i <= 15; i++){
-  wikis.push({
-    title: faker.hacker.noun(),
-    body: faker.hacker.phrase(),
-    private: faker.random.boolean(),
-    createdAt: new Date(),
-    updatedAt: new Date()
-  });
-}
+ for(let i = 1 ; i <= 15 ; i++){
+   users.push({
+     email: faker.internet.email(),
+     password: faker.internet.password(),
+     createdAt: new Date(),
+     updatedAt: new Date()
+   });
+ }
 
 module.exports = {
   up: (queryInterface, Sequelize) => {
@@ -21,12 +21,12 @@ module.exports = {
       Return a promise to correctly handle asynchronicity.
 
       Example:
-      return queryInterface.bulkInsert('People', [{
+      return queryInterface.bulkInsert('Person', [{
         name: 'John Doe',
         isBetaMember: false
       }], {});
     */
-    return queryInterface.bulkInsert("Wikis", wikis, {});
+    return queryInterface.bulkInsert("Users", users, {});
   },
 
   down: (queryInterface, Sequelize) => {
@@ -35,8 +35,8 @@ module.exports = {
       Return a promise to correctly handle asynchronicity.
 
       Example:
-      return queryInterface.bulkDelete('People', null, {});
+      return queryInterface.bulkDelete('Person', null, {});
     */
-    return queryInterface.bulkDelete("Wikis", null, {});
+    return queryInterface.bulkDelete("Users", null, {});
   }
 };
