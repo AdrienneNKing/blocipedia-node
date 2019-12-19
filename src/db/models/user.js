@@ -14,7 +14,13 @@ module.exports = (sequelize, DataTypes) => {
     },
   }, {});
   User.associate = function(models) {
-    // associations can be defined here
+    User.prototype.isAdmin = function() {
+     return this.role === "admin";
+   };
+
+   User.prototype.isPremium = function() {
+    return this.role === "premium";
+  };
   };
   return User;
 };
