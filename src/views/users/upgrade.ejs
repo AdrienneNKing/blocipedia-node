@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <% include ../static/partials/head.ejs %>
+    <script src="https://js.stripe.com/v3"></script>
+  </head>
+  <body>
+
+    <% include ../static/partials/navbar.ejs %>
+
+    <main class="container">
+      <h1>Premium Upgrade:</h1>
+      <ul>
+        <li>Create private wikis</li>
+        <li>Your wikis, your decisions</li>
+        <li>Create your own narratives</li>
+        <li>$15 for unlimited private wikis all year long</li>
+      </ul>
+      <button
+        style="background-color:#6772E5;color:#FFF;padding:8px 12px;border:0;border-radius:4px;font-size:1em"
+        id="checkout-button-plan_GQvVsxtccXtdWV"
+        role="link"
+      >
+        Upgrade Now
+      </button>
+
+      <div id="error-message"></div>
+    </main>
+
+    <% include ../static/partials/baseScripts.ejs %>
+
+    <script>
+      document.addEventListener("DOMContentLoaded", function(event) {
+
+        var stripe = Stripe('pk_test_WtyYDWlZoyOf9F6PVdhxXnSK00jQ8afELU');
+        var checkoutButton = document.getElementById('checkout-button-plan_GQvVsxtccXtdWV');
+        checkoutButton.addEventListener('click', function () {
+          stripe.redirectToCheckout({
+            items: [{plan: 'plan_GQvVsxtccXtdWV', quantity: 1}],
+            successUrl: window.location.protocol + '//localhost:3000/users/upgrade/success',
+            cancelUrl: window.location.protocol + '//localhost:3000/users/upgrade/cancel',
+          })
+          .then(function (result) {
+            console.log("Finished redirect");
+            console.log(result);
+            if (result.error) {
+              var displayError = document.getElementById('error-message');
+              displayError.textContent = result.error.message;
+            }
+          });
+        });
+      });
+    </script>
+
+  </body>
+</html>

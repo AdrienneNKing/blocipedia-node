@@ -22,7 +22,7 @@ sequelize.sync({force: true}).then((res) => {
     })
   })
 })
-})
+
 
 describe("#create()", () => {
 
@@ -50,5 +50,5 @@ describe("#create()", () => {
    });
 
  });
-
+})
 })

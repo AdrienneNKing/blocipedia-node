@@ -1,7 +1,9 @@
 const userQueries = require("../db/queries.users.js");
+const wikiQueries = require("../db/queries.wikis.js")
 const passport = require("passport");
 const sgMail = require('@sendgrid/mail');
 sgMail.setApiKey(process.env.SENDGRID_API_KEY);
+const stripe = require("stripe")("sk_test_snbmFObPKMJH63PNPU1GIxpD00Jk4RSl0G");
 
 const msg = {
   to: 'adriennenking@gmail.com',
@@ -61,5 +63,70 @@ module.exports = {
      req.flash("notice", "You've successfully signed out!");
      res.redirect("/");
    },
+
+   payment(req, res, next){
+     if (!req.user) {
+      res.redirect("/");
+    } else {
+      res.render("users/upgrade");
+    }
+  },
+
+  upgradeSuccess(req, res, next) {
+    if (!req.user) {
+      console.log("Req user:", req.user)
+      res.redirect("/")
+
+    } else {
+      userQueries.upgradeUser(req.user, (error, user) => {
+        console.log("Top of User Queries")
+        if (error || user == null) {
+          console.log("Error: " + error);
+        } else {
+          console.log("Upgrade successful");
+          req.flash("notice", "Thank you for upgrading!")
+          res.redirect("/users/upgrade");
+        }
+
+        console.log("End of User Queries")
+      });
+    }
+  },
+
+  cancel(req, res, next){
+    if (!req.user) {
+     res.redirect("/");
+   } else {
+     res.render("users/cancel");
+   }
+ },
+
+ primeMember(req, res, next){
+   if (!req.user) {
+    res.redirect("/");
+  } else {
+    res.render("users/prime");
+  }
+},
+
+  cancellationSuccess(req, res, next) {
+    if (!req.user) {
+      console.log("Req user:", req.user)
+      res.redirect("/")
+
+    } else {
+      userQueries.downgradeUser(req.user, (error, user) => {
+        if (error || user == null) {
+          console.log("Error: " + error);
+        } else {
+          console.log("Cancellation successful");
+          req.flash("notice", "Sorry to lose you as a prime user")
+          res.redirect("/users/cancelled");
+        }
+
+        console.log("End of User Queries")
+      });
+    }
+  }
 
 }

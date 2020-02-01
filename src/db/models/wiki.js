@@ -12,7 +12,7 @@ module.exports = (sequelize, DataTypes) => {
     private: DataTypes.BOOLEAN
   }, {});
   Wiki.associate = function(models) {
-    Wiki.hasMany(models.User, {
+    Wiki.belongsTo(models.User, {
       foreignKey: "userId",
       as: "users"
     });

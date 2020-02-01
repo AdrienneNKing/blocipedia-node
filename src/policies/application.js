@@ -1,4 +1,4 @@
-odule.exports = class ApplicationPolicy {
+module.exports = class ApplicationPolicy {
 
 
   constructor(user, record) {

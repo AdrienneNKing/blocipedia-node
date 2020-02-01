@@ -62,7 +62,7 @@ module.exports = {
 
    update(req, res, next){
 
-
+     console.log(req.params);
        wikiQueries.updateWiki(req.params.id, req.body, (err, wiki) => {
 
          if(err || wiki == null){
