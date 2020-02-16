@@ -19,8 +19,11 @@
           <label for="description">Body</label>
           <textarea rows="4" class="form-control" name="body" placeholder="Enter Body"></textarea>
         </div>
+
+        <% if(user.role == "premium" || user.role == "admin") { %>
         <div class="form-group">
           <label for="private">Check for a private wiki:</label><input type="checkbox" class="form-control" name="private"></div>
+        <% } %>
         <button type="submit" class="btn btn-primary">Submit</button>
       </form>
 

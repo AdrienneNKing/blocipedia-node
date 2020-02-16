@@ -1,4 +1,5 @@
 const User = require("./models").User;
+const Wiki = require("./models").Wiki;
 const bcrypt = require("bcryptjs");
 
 module.exports = {
@@ -45,8 +46,15 @@ module.exports = {
          return callback("User not found");
        } else {
          user.updateAttributes({ role: 'member' })
-         .then((user) => callback(null, user))
-       }
+         .then((user) => {
+           Wiki.update({private: false}, {where: {userId: user.id}})
+            .then((wikis) => {
+              console.log(wikis);
+              callback(null, user)
+            })
+
+       })
+      }
      }).catch(error => {
        callback(error);
      });

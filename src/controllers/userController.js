@@ -74,21 +74,15 @@ module.exports = {
 
   upgradeSuccess(req, res, next) {
     if (!req.user) {
-      console.log("Req user:", req.user)
       res.redirect("/")
 
     } else {
       userQueries.upgradeUser(req.user, (error, user) => {
-        console.log("Top of User Queries")
         if (error || user == null) {
-          console.log("Error: " + error);
         } else {
-          console.log("Upgrade successful");
           req.flash("notice", "Thank you for upgrading!")
           res.redirect("/users/upgrade");
         }
-
-        console.log("End of User Queries")
       });
     }
   },
@@ -111,7 +105,6 @@ module.exports = {
 
   cancellationSuccess(req, res, next) {
     if (!req.user) {
-      console.log("Req user:", req.user)
       res.redirect("/")
 
     } else {
@@ -123,8 +116,6 @@ module.exports = {
           req.flash("notice", "Sorry to lose you as a prime user")
           res.redirect("/users/cancelled");
         }
-
-        console.log("End of User Queries")
       });
     }
   }

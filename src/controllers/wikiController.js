@@ -1,27 +1,36 @@
 const wikiQueries = require("../db/queries.wikis.js")
+const userQueries = require("../db/queries.users.js")
+
 module.exports = {
   index(req, res, next){
+    const user = req.user;
     wikiQueries.getAllWikis((err, wikis) => {
       if(err){
         res.redirect(200, "static/index");
       } else {
-        res.render("wikis/index", {wikis});
+        res.render("wikis/index", {wikis, user});
       }
     })
   },
 
   new(req, res, next){
-    res.render("wikis/new");
+    const user = req.user;
+    res.render("wikis/new", {user});
   },
 
   create(req, res, next){
      let newWiki = {
        title: req.body.title,
        body: req.body.body,
-       private: req.body.private
+       private: !!req.body.private,
+       userId: req.user.id
      };
+     console.log("The new wiki is:", newWiki);
+     console.log("Wiki userId:", newWiki.userId)
      wikiQueries.addWiki(newWiki, (err, wiki) => {
+       console.log("Wiki userId part 2:", newWiki.userId)
        if(err){
+        console.log(err);
          res.redirect(500, "/wikis/new");
        } else {
          res.redirect(303, `/wikis/${wiki.id}`);
@@ -31,11 +40,12 @@ module.exports = {
 
  show(req, res, next){
    wikiQueries.getWiki(req.params.id, (err, wiki) => {
-
+     const user = req.user;
+     console.log(user);
      if(err || wiki == null){
        res.redirect(404, "/");
      } else {
-       res.render("wikis/show", {wiki});
+       res.render("wikis/show", {wiki, user});
      }
    })
  },

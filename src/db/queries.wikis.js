@@ -17,7 +17,8 @@ module.exports = {
     return Wiki.create({
       title: newWiki.title,
       body: newWiki.body,
-      private: newWiki.private
+      private: newWiki.private,
+      userId: newWiki.userId
     })
     .then((wiki) => {
       callback(null, wiki);
@@ -70,6 +71,21 @@ module.exports = {
          callback(err);
        });
      });
-   }
+   },
+
+   updatePublic(id, callback) {
+     return Wiki.findById(wiki.id)
+       .then(wiki => {
+         if (!wiki) {
+           return callback("Wiki not found");
+         } else {
+           wiki.updateAttributes({ private: false })
+           .then((wiki) => callback(null, wiki))
+         }
+       }).catch(error => {
+         callback(error);
+       });
+  },
+
 
 }

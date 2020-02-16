@@ -8,14 +8,14 @@
 
     <main class="container">
       <h1><%= wiki.title %></h1>
+      <% if(wiki.private == true) { %>
+        <button class="btn btn-danger">Private Wiki</button>
+      <% } %>
+      <% if(wiki.private !== true) { %>
+        <button class="btn btn-primary">Public Wiki</button>
+      <% } %>
+      <a href="/wikis/<%= wiki.id %>/edit" class="btn btn-warning">Edit</a>
         <form style="display:initial" action="/wikis/<%= wiki.id %>/destroy" method="post">
-          <% if(wiki.private == true) { %>
-            <button class="btn btn-danger">Private Wiki</button>
-          <% } %>
-          <% if(wiki.private !== true) { %>
-            <button class="btn btn-primary">Public Wiki</button>
-          <% } %>
-          <a href="/wikis/<%= wiki.id %>/edit" class="btn btn-warning">Edit</a>
           <button type="submit" class="btn btn-danger">Delete</button>
         </form>
       <p><%= wiki.body %></p>
