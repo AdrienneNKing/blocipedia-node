@@ -7,7 +7,7 @@
     <% include ../static/partials/navbar.ejs %>
 
     <main class="container">
-      <h1><%= wiki.title %></h1>
+      <h1 id="wiki-title"><%= wiki.title %></h1>
       <% if(wiki.private == true) { %>
         <button class="btn btn-danger">Private Wiki</button>
       <% } %>
@@ -18,12 +18,10 @@
         <form style="display:initial" action="/wikis/<%= wiki.id %>/destroy" method="post">
           <button type="submit" class="btn btn-danger">Delete</button>
         </form>
-      <p><%= wiki.body %></p>
 
-
+      <%- wiki.body %>
     </main>
 
     <% include ../static/partials/baseScripts.ejs %>
-
   </body>
 </html>

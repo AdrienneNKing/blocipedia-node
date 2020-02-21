@@ -1,6 +1,9 @@
 const wikiQueries = require("../db/queries.wikis.js")
 const userQueries = require("../db/queries.users.js")
-
+const markdown = require("markdown").markdown;
+const md_content = "Hello.\n\n* This is markdown.\n* It is fun\n* Love it or leave it."
+const html_content = markdown.toHTML( md_content );
+console.log(html_content)
 module.exports = {
   index(req, res, next){
     const user = req.user;
@@ -25,12 +28,8 @@ module.exports = {
        private: !!req.body.private,
        userId: req.user.id
      };
-     console.log("The new wiki is:", newWiki);
-     console.log("Wiki userId:", newWiki.userId)
      wikiQueries.addWiki(newWiki, (err, wiki) => {
-       console.log("Wiki userId part 2:", newWiki.userId)
        if(err){
-        console.log(err);
          res.redirect(500, "/wikis/new");
        } else {
          res.redirect(303, `/wikis/${wiki.id}`);
@@ -45,7 +44,8 @@ module.exports = {
      if(err || wiki == null){
        res.redirect(404, "/");
      } else {
-       res.render("wikis/show", {wiki, user});
+       wiki.body = markdown.toHTML(wiki.body)
+       res.render("wikis/show", {markdown, wiki, user});
      }
    })
  },
@@ -71,16 +71,14 @@ module.exports = {
    },
 
    update(req, res, next){
-
-     console.log(req.params);
        wikiQueries.updateWiki(req.params.id, req.body, (err, wiki) => {
-
          if(err || wiki == null){
            res.redirect(404, `/wikis/${req.params.id}/edit`);
          } else {
+           wiki.body = markdown.toHTML(wiki.body)
            res.redirect(`/wikis/${wiki.id}`);
          }
        });
-     }
+     },
 
 }
