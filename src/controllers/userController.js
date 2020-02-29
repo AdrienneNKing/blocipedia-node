@@ -118,6 +118,21 @@ module.exports = {
         }
       });
     }
-  }
+  },
+
+  showCollaborators(req, res, next) {
+    if(!req.user) {
+      res.render("/");
+    } else {
+      userQueries.getCollaborators(req.params.id, (err, wikis) => {
+        if(err || wikis == null) {
+          console.log("This is your error: " + err);
+          res.redirect("/");
+        } else {
+          res.render("users/collaborate.ejs", { wikis })
+        }
+      })
+    }
+  },
 
 }

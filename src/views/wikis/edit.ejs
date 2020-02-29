@@ -28,6 +28,20 @@
 
           <textarea rows="4" class="form-control" name="body" placeholder="Enter body here"><%= wiki.body %></textarea>
         </div>
+      </form>
+      <form action="/wikis/<%= wiki.id %>/add-collaborator" method="post">
+      <div class="form-group">
+        <label for="collaborator">Add a collaborator to your private wiki</label>
+        <input name="collaborator" class="form-control" placeholder="Enter user's email" />
+        <button type="submit" class="btn btn-primary">Add Collaborator</button>
+      </div>
+    </form>
+      <form action="/wikis/<%= wiki.id %>/remove-collaborator" method="post">
+        <div class="form-group">
+          <label for="collaborator">Remove a collaborator from your private wiki</label>
+          <input name="collaborator" class="form-control" placeholder="Enter user's email" />
+          <button type="submit" class="btn btn-primary">Remove Collaborator</button>
+        </div>
         <button type="submit" class="btn btn-primary">Update</button>
       </form>
     </main>

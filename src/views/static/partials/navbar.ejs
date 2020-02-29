@@ -19,11 +19,17 @@
      <li class="nav-item">
        <a class="nav-link" href="/users/upgrade">Upgrade</a>
      </li>
+     <li class="nav-item">
+          <a class="nav-link" href="/users/<%= currentUser.id %>/collaborate">Collaborate</a>
+        </li>
    <% } else if(currentUser && currentUser.role === "premium") { %>
      <li class="nav-item">
        <a class="nav-link" href="/users/sign_out">Sign out</a>
      </li>
       <li class="nav-item">
+        <li class="nav-item">
+          <a class="nav-link" href="/users/<%= currentUser.id %>/collaborate">Collaborate</a>
+        </li>
         <a class="nav-link" href="/users/prime">
           <button class="btn btn-primary">Premium User</button>
         </a>

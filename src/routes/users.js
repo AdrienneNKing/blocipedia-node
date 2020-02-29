@@ -14,5 +14,6 @@ router.get("/users/sign_out", userController.signOut);
 router.get("/users/cancel", userController.cancellationSuccess);
 router.get("/users/cancelled", userController.cancel);
 router.get("/users/prime", userController.primeMember);
+router.get("/users/:id/collaborate", userController.showCollaborators);
 
 module.exports = router;

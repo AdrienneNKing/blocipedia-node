@@ -1,9 +1,7 @@
 const wikiQueries = require("../db/queries.wikis.js")
 const userQueries = require("../db/queries.users.js")
 const markdown = require("markdown").markdown;
-const md_content = "Hello.\n\n* This is markdown.\n* It is fun\n* Love it or leave it."
-const html_content = markdown.toHTML( md_content );
-console.log(html_content)
+
 module.exports = {
   index(req, res, next){
     const user = req.user;
@@ -80,5 +78,32 @@ module.exports = {
          }
        });
      },
+
+  addCollaborator(req, res, next) {
+    wikiQueries.addCollaborator(req, (error, user) => {
+      if(error) {
+        console.log("There was an error: " + error);
+        res.redirect("/");
+      } else {
+        res.redirect("/wikis/add-collaborator/success");
+      }
+    })
+  },
+  removeCollaborator(req, res, next) {
+    wikiQueries.removeCollaborator(req, (error, user) => {
+      if(error) {
+        console.log("There was an error: " + error);
+        res.redirect("/");
+      } else {
+        res.redirect("/wikis/remove-collaborator/success");
+      }
+    });
+  },
+  collaboratorSuccess(req, res, next) {
+    res.render("wikis/addCollaboratorSuccess");
+  },
+  removeCollaboratorSuccess(req, res, next) {
+    res.render("wikis/removeCollaboratorSuccess");
+  }
 
 }

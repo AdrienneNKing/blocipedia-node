@@ -1,6 +1,8 @@
 const User = require("./models").User;
 const bcrypt = require("bcryptjs");
 const Wiki = require("./models").Wiki;
+const Collaborator = require("./models").Collaborator;
+
 module.exports = {
   getAllWikis(callback){
     return Wiki.findAll()
@@ -86,6 +88,50 @@ module.exports = {
          callback(error);
        });
   },
+
+  addCollaborator(req, callback) {
+    User.findOne({
+      where: {
+        email: req.body.collaborator
+      }
+    }).then(user => {
+      if(!user) {
+        console.log("User not found");
+        callback("Error", "User not found");
+      }
+      Collaborator.create({
+        wikiId: req.params.id,
+        userId: user.id
+      })
+    }).then(collaborator => {
+console.log("This is the collaborator", collaborator)
+      callback(null, collaborator);
+    }).catch(err => {
+      callback(err, null);
+    });
+  },
+
+  dropCollaborator(req, callback) {
+    User.findOne({
+      where: {
+        email: req.body.collaborator
+      }
+    }).then(user => {
+      if(!user){
+        console.log("User doesn't exist");
+        callback("Error", "User doesn't exist");
+      }
+      Collaborator.destroy({
+        where: {
+          wikiId: req.params.id,
+          userId: user.id
+        }
+      }).catch(error => {
+        callback(error);
+      })
+    })
+  }
+
 
 
 }
